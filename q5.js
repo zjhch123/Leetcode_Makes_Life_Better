@@ -26,5 +26,3 @@ var longestPalindrome = function(s) {
 
   return substring.replace(/-/g, '')
 };
-
-console.log(longestPalindrome('e1see2ees'))

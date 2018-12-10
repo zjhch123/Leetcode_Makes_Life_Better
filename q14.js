@@ -15,7 +15,7 @@ const getCommonPrefix = (s1, s2) => {
   }
   return prefix
 }
-
+ 
 var longestCommonPrefix = function(strs) {
   if (strs.length == 0) {
     return ''

@@ -58,3 +58,37 @@ var isValidSudoku = function(board) {
 
   return true
 };
+
+var isValidSudoku2 = function(board) {
+  const row = []
+  const column = []
+  const cell = []
+
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      const chr = board[i][j]
+      if (chr === '.') {
+        continue
+      }
+      if (typeof row[i] === 'undefined') {
+        row[i] = new Set()
+      }
+      if (typeof column[j] === 'undefined') {
+        column[j] = new Set()
+      }
+      const cellId = parseInt(i / 3) * 3 + parseInt(j / 3)
+      if (typeof cell[cellId] === 'undefined') {
+        cell[cellId] = new Set()
+      }
+
+      if (row[i].has(chr) || column[j].has(chr) || cell[cellId].has(chr)) {
+        return false
+      }
+      row[i].add(chr)
+      column[j].add(chr)
+      cell[cellId].add(chr)
+    }
+  }
+
+  return true
+}

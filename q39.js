@@ -10,20 +10,20 @@ var combinationSum = function(candidates, target) {
   
   let result = []
 
-  function dfs(candidates, tempArr, remain, start) {
+  function dfs(candidates, tempArr, remain, index) {
     if (remain < 0) {
       return
     } else if (remain === 0) {
       result.push(tempArr.slice(0))
       return
-    } else {
-      for (let i = start; i < candidates.length; i++) {
-        tempArr.push(candidates[i])
-        dfs(candidates, tempArr, remain - candidates[i], i)
-        tempArr.pop()
-      }
     }
-  }
+
+    for (let i = index; i < candidates.length; i++) {
+      tempArr.push(candidates[i])
+      dfs(candidates, tempArr, remain - candidates[i], i)
+      tempArr.pop()
+    }
+  }  
 
   dfs(candidates, [], target, 0)
 

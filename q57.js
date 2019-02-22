@@ -25,58 +25,46 @@ var insert = function(intervals, newInterval) {
         return mid
       }
 
-      if (intervals[mid].start <= value && intervals[mid].end >= value) {
+      if (intervals[mid].start === value) {
         return mid
       } else if (intervals[mid].start > value) {
         right = mid - 1
-      } else if (intervals[mid].end < value) {
+      } else if (intervals[mid].start < value) {
         left = mid + 1
       }
     }
 
     return left
   }
-
-  const insertIndex1 = binarySearch(intervals, newInterval.start)
-  const insertIndex2 = binarySearch(intervals, newInterval.end)
-
-  let left = 0
-  let right = 0
-
-  if (insertIndex1 === insertIndex2) {
-    if (insertIndex1 < intervals.length) {
-      if (newInterval.end < intervals[insertIndex1].start) {
-        intervals.splice(insertIndex1, 0, newInterval)  
+  const merge = function(intervals) {
+    const ret = []
+    let ptr = 0
+  
+    for (let i = 0; i < intervals.length; i++) {
+      if (ret.length === 0) {
+        ret.push(intervals[i])
       } else {
-        left = Math.min(newInterval.start, intervals[insertIndex1].start)
-        right = Math.max(newInterval.end, intervals[insertIndex1].end)
-        intervals.splice(insertIndex1, 1, new Interval(left, right))
+        const merged = ret[ptr]
+        const interval = intervals[i]
+        if (interval.end <= merged.end) {
+          continue
+        } else {
+          if (interval.start > merged.end) {
+            ret.push(intervals[i])
+            ptr += 1
+          } else {
+            merged.end = interval.end
+          }
+        }
       }
-    } else {
-      intervals.splice(insertIndex1, 0, newInterval)
     }
-    return intervals
-  }
+  
+    return ret
+  };
 
-  let deleteStart = insertIndex1
-  let deleteEnd = insertIndex2
+  const insertedIndex = binarySearch(intervals, newInterval.start)
 
-  if (newInterval.start < intervals[insertIndex1].start) {
-    left = newInterval.start
-  } else {
-    left = intervals[insertIndex1].start
-  }
+  intervals.splice(insertedIndex, 0, newInterval)
 
-  if (insertIndex2 >= intervals.length) {
-    right = newInterval.end
-  } else if (newInterval.end < intervals[insertIndex2].start) {
-    right = newInterval.end
-    deleteEnd -= 1
-  } else {
-    right = intervals[insertIndex2].end
-  }
-
-  intervals.splice(deleteStart, deleteEnd - deleteStart + 1, new Interval(left, right))
-
-  return intervals
+  return merge(intervals)
 };

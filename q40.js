@@ -10,31 +10,34 @@ var combinationSum2 = function(candidates, target) {
   
   candidates = candidates.sort((a, b) => a - b)
 
-  const same = new Set()
+  const visited = Array(candidates.length).fill(false)
   const ret = []
-  function dfs(candidates, tempArr, remain, start) {
-    if (remain < 0) {
+
+  const backtracking = (arr = [], startIndex = 0, nowSum = 0) => {
+    if (nowSum === target) {
+      ret.push(arr.slice(0))
       return
-    } else if (remain === 0) {
-      const t = tempArr.slice(0)
-      const key = t.join('')
-      if (same.has(key)) {
-        return
-      }
-      ret.push(t)
-      same.add(key)
+    } else if (nowSum > target) {
       return
-    } else {
-      for (let i = start; i < candidates.length; i++) {
-        tempArr.push(candidates[i])
-        dfs(candidates, tempArr, remain - candidates[i], i + 1)
-        tempArr.pop()
+    }
+
+    for (let i = startIndex; i < candidates.length; i++) {
+      if (i > 0 && candidates[i] === candidates[i - 1] && !visited[i - 1]) {
+        continue
       }
+      if (visited[i]) {
+        continue
+      }
+
+      visited[i] = true
+      arr.push(candidates[i])
+      backtracking(arr, i + 1, nowSum + candidates[i])
+      arr.length -= 1
+      visited[i] = false
     }
   }
 
-  dfs(candidates, [], target, 0)
-
+  backtracking()
   return ret
 };
 

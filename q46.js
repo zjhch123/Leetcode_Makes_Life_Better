@@ -9,13 +9,24 @@ var permute = function(nums) {
     return [nums]
   }
 
-  for (let i = 0; i < nums.length; i++) {
-    const start = nums[i]
-    const res = permute([ ...nums.slice(0, i), ...nums.slice(i + 1) ])
-    for (let j = 0; j < res.length; j++) {
-      ret.push([start, ...res[j]])
+  const backtracking = (arr) => {
+    if (arr.size === nums.length) {
+      ret.push(Array.from(arr))
+      return
+    }
+
+    for (let i = 0; i < nums.length; i++) {
+      if (arr.has(nums[i])) {
+        continue
+      }
+      arr.add(nums[i])
+      backtracking(arr)
+      arr.delete(nums[i])
     }
   }
-
+  
+  backtracking(new Set())
   return ret
 };
+
+console.log(permute([1,2,3]))

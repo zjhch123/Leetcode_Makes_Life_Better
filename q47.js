@@ -4,30 +4,39 @@
  */
 var permuteUnique = function(nums) {
   const ret = []
+  const visited = Array(nums.length).fill(false)
 
   if (nums.length === 1) {
     return [nums]
   }
 
-  const started = {}
+  nums = nums.sort((a, b) => a - b)
 
-  for (let i = 0; i < nums.length; i++) {
-    const start = nums[i]
-
-    if (started[start]) {
-      continue
+  const backtracking = (arr, visited) => {
+    if (arr.length === nums.length) {
+      ret.push(arr.slice(0))
+      return
     }
 
-    const res = permuteUnique([ ...nums.slice(0, i), ...nums.slice(i + 1) ])
+    for (let i = 0; i < nums.length; i++) {
+      if (i > 0 && nums[i] === nums[i - 1] && !visited[i - 1]) {
+        continue
+      }
+      if (visited[i]) {
+        continue
+      }
 
-    for (let j = 0; j < res.length; j++) {
-      ret.push([start, ...res[j]])
+      visited[i] = true
+      arr.push(nums[i])
+      backtracking(arr, visited)
+      arr.length -= 1
+      visited[i] = false
     }
-    
-    started[start] = true
   }
 
+  backtracking([], visited)
+  
   return ret
 };
 
-console.log(permuteUnique([1,1,2]))
+console.log(permuteUnique([1,2,1]))

@@ -8,24 +8,25 @@ var combinationSum = function(candidates, target) {
     return []
   }
   
-  let result = []
+  const result = []
 
-  function dfs(candidates, tempArr, remain, index) {
-    if (remain < 0) {
+  const backtracking = (arr = [], nowSum = 0, startIndex = 0) => {
+    if (nowSum === target) {
+      result.push(arr.slice(0))
       return
-    } else if (remain === 0) {
-      result.push(tempArr.slice(0))
+    } else if (nowSum > target) {
       return
     }
 
-    for (let i = index; i < candidates.length; i++) {
-      tempArr.push(candidates[i])
-      dfs(candidates, tempArr, remain - candidates[i], i)
-      tempArr.pop()
+    for (let i = startIndex; i < candidates.length; i++) {
+      arr.push(candidates[i])
+      backtracking(arr, nowSum + candidates[i], i)
+      arr.length -= 1
     }
-  }  
+  }
 
-  dfs(candidates, [], target, 0)
-
+  backtracking()
   return result
 };
+
+console.log(combinationSum([2,3,6,7], 7))

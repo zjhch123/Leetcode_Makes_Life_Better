@@ -9,7 +9,7 @@ var numIslands = function(grid) {
   if (grid === null || grid.length === 0) {
     return islands
   }
-
+ 
   const row = grid.length
   const column = grid[0].length
 

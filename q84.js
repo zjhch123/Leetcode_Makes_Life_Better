@@ -50,27 +50,19 @@ var largestRectangleArea2 = function(heights) {
   let max = 0
 
   while (index < heights.length) { // 构造单调递增栈, 顺便计算最大值
-    const height = heights[index]
-    if (stack.length === 0) {
+    const height = heights[index++]
+    if (stack.length === 0 || stack[stack.length - 1] <= height) {
       stack.push(height)
     } else {
-      const peek = stack[stack.length - 1]
-      if (peek < height) {
-        stack.push(height)
-      } else {
-        let count = 0
-        while (stack[stack.length - 1] > height) {
-          count += 1
-          const outer = stack.pop()
-          max = Math.max(outer * count, max)
-        }
-        while (count >= 0) {
-          stack.push(height)
-          count -= 1
-        }
+      let count = 1
+      while (stack[stack.length - count] > height) {
+        const outer = stack[stack.length - count]
+        max = Math.max(outer * count, max)
+        stack[stack.length - count] = height
+        count += 1
       }
+      stack.push(height)
     }
-    index += 1
   }
 
   const size = stack.length
@@ -81,5 +73,5 @@ var largestRectangleArea2 = function(heights) {
   return max
 };
 
-console.log(largestRectangleArea([4,1,6,8,3,6,5]))
-console.log(largestRectangleArea2([4,1,6,8,3,6,5]))
+console.log(largestRectangleArea([2,1,5,6,2,3]))
+console.log(largestRectangleArea2([2,1,5,6,2,3]))

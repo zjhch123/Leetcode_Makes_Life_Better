@@ -23,4 +23,4 @@ var numTrees = function(n) {
   return dfs(n)
 };
 
-console.log(numTrees(0))
+console.log(numTrees(10))

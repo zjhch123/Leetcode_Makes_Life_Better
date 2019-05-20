@@ -16,14 +16,14 @@ var hasCycle = function(head) {
   }
 
   let ptr = head
-  let nPtr = head.next
+  let nPtr = head
 
-  while (nPtr !== null && nPtr.next !== null) {
+  while (ptr && nPtr && nPtr.next) {
+    ptr = ptr.next
+    nPtr = nPtr.next.next
     if (ptr === nPtr) {
       return true
     }
-    ptr = ptr.next
-    nPtr = nPtr.next.next
   }
 
   return false

@@ -13,24 +13,14 @@ var findMin = function(nums) {
     return nums[0]
   }
 
-  while (left < right) {
-    while (left < right && nums[left] === nums[left + 1]) {
-      left += 1
-    }
-
-    const mid = ~~((left + right) / 2)
-
-    if (nums[left] <= nums[mid] && nums[right] < nums[mid]) {
-      left = mid + 1
-    } else {
+  while (right - left > 1) {
+    const mid = Math.floor((left + right) / 2)
+    if (nums[left] > nums[mid]) {
       right = mid
+    } else {
+      left = mid
     }
   }
 
-  return nums[left]
+  return nums[right]
 };
-
-console.log(findMin([2,2,2,2,2,3,3,3,3,3,0,2,2,2,2,2,2]))
-
-
-// 2 2 1 2 2 2
